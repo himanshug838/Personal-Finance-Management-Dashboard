@@ -1,3 +1,7 @@
+/**
+ * UI Component powered by React Bits
+ * @see https://www.reactbits.dev/
+ */
 import React, { useEffect, useRef, useState } from 'react';
 import { useInView } from 'framer-motion';
 

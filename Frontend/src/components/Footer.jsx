@@ -100,12 +100,21 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Copyright */}
+        {/* Copyright & UI Component Credits */}
         <div className="pt-3 mt-4 border-top border-secondary border-opacity-25 text-xs text-center d-flex flex-column flex-sm-row align-items-center justify-content-between gap-2 text-white-50">
           <div>
             © {new Date().getFullYear()} Finanza | Personal Finance Dashboard. All rights reserved.
           </div>
           <div className="d-flex align-items-center gap-3">
+            <a
+              href="https://www.reactbits.dev/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary fw-semibold text-decoration-none d-flex align-items-center gap-1"
+            >
+              <i className="bi bi-box-seam"></i> UI Components by React Bits
+            </a>
+            <span>•</span>
             <a href="#privacy">Privacy Policy</a>
             <span>•</span>
             <a href="#terms">Terms of Service</a>

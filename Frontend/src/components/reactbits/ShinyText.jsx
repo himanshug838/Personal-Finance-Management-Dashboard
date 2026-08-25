@@ -1,3 +1,7 @@
+/**
+ * UI Component powered by React Bits
+ * @see https://www.reactbits.dev/
+ */
 import React from 'react';
 
 const ShinyText = ({
