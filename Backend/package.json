@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/package.json",
   "name": "pfm-backend",
   "version": "1.0.0",
   "description": "Backend for the Personal Finance Management Dashboard",
@@ -14,12 +15,13 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.22.2",
-    "jsonwebtoken": "^9.0.3",
-    "mongoose": "^8.5.0",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
+    "plaid": "^28.0.0",
     "postman": "^0.2.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.9"
   }
 }
