@@ -1,22 +1,28 @@
 import express from 'express';
 const router = express.Router();
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import User from '../models/user.js';
-import authMiddleware from '../middleware/authMiddleware.js';
-import checkDbConnection from '../middleware/dbCheckMiddleware.js';
-
-// Apply DB connection check to all authentication routes
-router.use(checkDbConnection);
-
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 
 // POST /api/auth/register
-router.post('/register', async (req, res) => {
+router.post('/register', async (req, res) => { 
   try {
     const { firstName, lastName, email, password } = req.body;
 
+    // Validate required fields
     if (!firstName || !lastName || !email || !password) {
-      return res.status(400).json({ error: 'Please provide all required fields' });
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Invalid email format' });
+    }
+
+    // Validate password strength (minimum 6 characters)
+    if (password.length < 6) {
+      return res.status(400).json({ error: 'Password must be at least 6 characters' });
     }
 
     // Check if user already exists
@@ -28,15 +34,16 @@ router.post('/register', async (req, res) => {
     await user.save();
 
     // Generate JWT Token
-    const payload = { userId: user._id, role: user.role };
-    const token = jwt.sign(payload, process.env.JWT_SECRET || 'default_secret', { expiresIn: '7d' });
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({ error: 'Server configuration error' });
+    }
+    
+    const payload = { userId: user._id };
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-    res.status(201).json({
-      token,
-      user: { id: user._id, _id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role, createdAt: user.createdAt }
-    });
+    res.status(201).json({ token, user: { id: user._id, firstName, lastName, email } });
   } catch (err) {
-    console.error('Registration Error:', err);
+    console.error('Registration error:', err);
     res.status(500).json({ error: 'Server error during registration' });
   }
 });
@@ -46,8 +53,9 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // Validate required fields
     if (!email || !password) {
-      return res.status(400).json({ error: 'Please provide email and password' });
+      return res.status(400).json({ error: 'Email and password are required' });
     }
 
     // Verify user exists
@@ -59,15 +67,19 @@ router.post('/login', async (req, res) => {
     if (!isMatch) return res.status(400).json({ error: 'Invalid email or password' });
 
     // Generate JWT Token
-    const payload = { userId: user._id, role: user.role };
-    const token = jwt.sign(payload, process.env.JWT_SECRET || 'default_secret', { expiresIn: '7d' });
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({ error: 'Server configuration error' });
+    }
+    
+    const payload = { userId: user._id };
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
 
     res.json({
       token,
       user: { id: user._id, _id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role, createdAt: user.createdAt }
     });
   } catch (err) {
-    console.error('Login Error:', err);
+    console.error('Login error:', err);
     res.status(500).json({ error: 'Server error during login' });
   }
 });

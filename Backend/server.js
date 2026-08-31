@@ -8,17 +8,33 @@ import adminRoutes from './routes/adminRoutes.js';
 dotenv.config();
 const app = express();
 
-app.use(express.json());
-app.use(cors()); // Crucial for allowing React to connect
+// Middleware
+app.use(express.json()); // Parses incoming JSON requests
+app.use(cors());         // Prevents React frontend CORS errors
 
-app.use('/api/auth', authRoutes);
-app.use('/api/admin', adminRoutes);
+// Check for required environment variables
+if (!process.env.MONGO_URI) {
+  console.error('Error: MONGO_URI environment variable is not set');
+  process.exit(1);
+}
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+if (!process.env.JWT_SECRET) {
+  console.error('Error: JWT_SECRET environment variable is not set');
+  process.exit(1);
+}
 
-mongoose.connect(process.env.MONGO_URI)
+// Mount Routes
+app.use('/api/auth', require('./routes/authRoutes'));
+
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
   .then(() => {
     console.log('MongoDB Connected successfully');
   })
-  .catch(err => console.error('Database connection error:', err.message));
+  .catch(err => {
+    console.error('Database connection error:', err);
+    process.exit(1);
+  });
