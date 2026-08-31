@@ -7,7 +7,7 @@ import { User, Account, Transaction } from '../models/index.js';
 
 async function initDatabase() {
   const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/pfm_dashboard';
-  console.log('Connecting to MongoDB:', mongoUri);
+  console.log('Connecting to MongoDB...');
 
   try {
     await mongoose.connect(mongoUri);

@@ -1,11 +1,13 @@
 import express from 'express';
-const router = express.Router();
 import User from '../models/user.js';
 import Account from '../models/Account.js';
 import Transaction from '../models/Transaction.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 import adminMiddleware from '../middleware/adminMiddleware.js';
 import checkDbConnection from '../middleware/dbCheckMiddleware.js';
+
+
+const router = express.Router();
 
 // Protect all admin routes with Database Check, Auth, and Admin Role check
 router.use(checkDbConnection);

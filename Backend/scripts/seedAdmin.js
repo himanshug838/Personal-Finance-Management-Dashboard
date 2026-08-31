@@ -14,7 +14,7 @@ async function seedAdmin() {
   const defaultPassword = 'admin123456';
   const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/pfm_dashboard';
 
-  console.log(`Connecting to MongoDB: ${mongoUri}`);
+  console.log('Connecting to MongoDB...');
 
   try {
     await mongoose.connect(mongoUri);

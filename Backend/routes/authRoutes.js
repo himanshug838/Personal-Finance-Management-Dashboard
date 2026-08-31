@@ -1,11 +1,13 @@
 import express from 'express';
-const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import User from '../models/user.js';
+import authMiddleware from '../middleware/authMiddleware.js';
+
+const authRoutes = express.Router();
 
 // POST /api/auth/register
-router.post('/register', async (req, res) => { 
+authRoutes.post('/register', async (req, res) => { 
   try {
     const { firstName, lastName, email, password } = req.body;
 
@@ -49,7 +51,7 @@ router.post('/register', async (req, res) => {
 });
 
 // POST /api/auth/login
-router.post('/login', async (req, res) => {
+authRoutes.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -85,7 +87,7 @@ router.post('/login', async (req, res) => {
 });
 
 // GET /api/auth/me (Get current authenticated user)
-router.get('/me', authMiddleware, async (req, res) => {
+authRoutes.get('/me', authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId).select('-password');
     if (!user) return res.status(404).json({ error: 'User not found' });
@@ -99,7 +101,7 @@ router.get('/me', authMiddleware, async (req, res) => {
 });
 
 // PUT /api/auth/profile (Update profile details and optional password)
-router.put('/profile', authMiddleware, async (req, res) => {
+authRoutes.put('/profile', authMiddleware, async (req, res) => {
   try {
     const { firstName, lastName, email, currentPassword, newPassword } = req.body;
     const user = await User.findById(req.user.userId);
@@ -151,4 +153,4 @@ router.put('/profile', authMiddleware, async (req, res) => {
   }
 });
 
-export default router;
+export default authRoutes;

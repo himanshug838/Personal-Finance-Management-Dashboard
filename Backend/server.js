@@ -2,11 +2,11 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import authRoutes from './routes/authRoutes.js';
-import adminRoutes from './routes/adminRoutes.js';
+import authRoutes from "./routes/authRoutes.js"
 
 dotenv.config();
 const app = express();
+const PORT = Number(process.env.PORT) || 5000;
 
 // Middleware
 app.use(express.json()); // Parses incoming JSON requests
@@ -24,15 +24,17 @@ if (!process.env.JWT_SECRET) {
 }
 
 // Mount Routes
-app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/auth', authRoutes);
 
 // Connect to MongoDB
+mongoose.set('strictQuery', false);
 mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
 })
   .then(() => {
     console.log('MongoDB Connected successfully');
+    app.listen(PORT, () => {
+      console.log(`Server listening on port ${PORT}`);
+    });
   })
   .catch(err => {
     console.error('Database connection error:', err);

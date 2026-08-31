@@ -1,8 +1,10 @@
 # Dependencies
 node_modules/
+Backend/node_modules/
 
 # Environment Variables
 .env
+Backend/.env
 .env.local
 .env.*.local
 
