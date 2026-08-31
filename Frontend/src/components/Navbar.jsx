@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import ShinyText from './reactbits/ShinyText';
+import Magnet from './reactbits/Magnet';
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -17,19 +19,13 @@ const Navbar = () => {
       <div className="finanza-top-bar py-1.5 px-3 px-lg-5 d-none d-md-block">
         <div className="container-fluid d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center gap-4">
-            <span>
-              <i className="fa-solid fa-location-dot me-1.5 text-primary"></i> 123 Financial Tower, New York, USA
-            </span>
-            <span>
-              <i className="fa-solid fa-clock me-1.5 text-primary"></i> Mon - Fri: 9:00 AM - 9:00 PM
+            <span className="text-xs">
+              <i className="bi bi-shield-check me-1 text-primary"></i> Secure Personal Finance Management Portal
             </span>
           </div>
           <div className="d-flex align-items-center gap-4">
-            <span>
-              <i className="fa-solid fa-envelope me-1.5 text-primary"></i> support@finanza.com
-            </span>
-            <span>
-              <i className="fa-solid fa-phone me-1.5 text-primary"></i> +1 (800) 555-FINANZA
+            <span className="text-xs">
+              <i className="bi bi-clock-history me-1 text-primary"></i> Realtime Analytics & Budget Tracking
             </span>
           </div>
         </div>
@@ -39,10 +35,14 @@ const Navbar = () => {
       <nav className="navbar navbar-expand-lg finanza-navbar px-3 px-lg-5 py-2">
         <div className="container-fluid">
           <Link to="/" className="navbar-brand d-flex align-items-center gap-2 text-decoration-none">
-            <div className="rounded-3 p-1 px-2.5 text-white fw-bold shadow-sm" style={{ backgroundColor: '#355EFC' }}>
-              <i className="bi bi-graph-up-arrow fs-5"></i>
-            </div>
-            <span className="finanza-brand">Finanza</span>
+            <Magnet magnetStrength={4}>
+              <div className="rounded-3 p-1 px-2.5 text-white fw-bold shadow-sm" style={{ backgroundColor: '#355EFC' }}>
+                <i className="bi bi-graph-up-arrow fs-5"></i>
+              </div>
+            </Magnet>
+            <span className="finanza-brand">
+              <ShinyText text="Finanza" speed={4} />
+            </span>
           </Link>
 
           <button
@@ -99,27 +99,33 @@ const Navbar = () => {
                     </span>
                   </Link>
 
-                  <button
-                    onClick={handleLogout}
-                    className="btn btn-outline-danger btn-sm px-3 py-2 fw-semibold rounded-3 d-flex align-items-center gap-1.5"
-                  >
-                    <i className="bi bi-box-arrow-right"></i> Logout
-                  </button>
+                  <Magnet magnetStrength={3}>
+                    <button
+                      onClick={handleLogout}
+                      className="btn btn-outline-danger btn-sm px-3 py-2 fw-semibold rounded-3 d-flex align-items-center gap-1.5"
+                    >
+                      <i className="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                  </Magnet>
                 </div>
               ) : (
                 <div className="d-flex align-items-center gap-2">
-                  <Link
-                    to="/login"
-                    className="btn btn-outline-primary btn-sm px-3.5 py-2 fw-semibold rounded-3"
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    to="/register"
-                    className="btn btn-finanza-primary btn-sm px-4 py-2 fw-semibold rounded-3"
-                  >
-                    Create Account
-                  </Link>
+                  <Magnet magnetStrength={3}>
+                    <Link
+                      to="/login"
+                      className="btn btn-outline-primary btn-sm px-3.5 py-2 fw-semibold rounded-3"
+                    >
+                      Sign In
+                    </Link>
+                  </Magnet>
+                  <Magnet magnetStrength={3}>
+                    <Link
+                      to="/register"
+                      className="btn btn-finanza-primary btn-sm px-4 py-2 fw-semibold rounded-3"
+                    >
+                      Create Account
+                    </Link>
+                  </Magnet>
                 </div>
               )}
             </div>

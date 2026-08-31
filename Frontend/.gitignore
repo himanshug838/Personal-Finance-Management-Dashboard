@@ -22,8 +22,15 @@ pnpm-debug.log*
 
 # OS files
 .DS_Store
-Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# IDE
-.vscode/
-.idea/
+#Dependencies
+/node_modules/
+
+#Environment Variable
+/.env
+!**/.env.example
